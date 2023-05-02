@@ -94,7 +94,16 @@ function Genres() {
   return <>
     <div className='p-4'>
       <h2 className='font-bold text-lg mb-2 text-gray-700'>Vibes</h2>
-      <SwiperList slidesPerView={2.2} spaceBetween={20}>
+      <SwiperList slidesPerView={2.3} spaceBetween={12} breakpoints={{
+              640: {
+                slidesPerView: 4.3,
+                 spaceBetween: 12
+              },
+              1024: {
+                slidesPerView: 10.3,
+                 spaceBetween: 12
+              },
+        }}>
         {data.data.moods.filter(mood => ! HIDDEN_MOODS.includes(mood.title)).map(mood => (
           <Link key={mood.id} href={`/genre/${mood.id}`}>
             <div className="bg-blue-200 h-20 block rounded p-6" style={{ backgroundColor: moods[mood.title]?.color, backgroundImage: `url(${moods[mood.title]?.background.src})`, backgroundSize: 'cover', backgroundPosition: '100%' }}></div>
@@ -106,7 +115,16 @@ function Genres() {
       <hr className="my-4" />
 
       <h2 className='font-bold text-lg mb-2 text-gray-700'>Genres</h2>
-      <SwiperList slidesPerView={2.2} spaceBetween={20}>
+      <SwiperList slidesPerView={2.3} spaceBetween={12} breakpoints={{
+              640: {
+                slidesPerView: 4.3,
+                 spaceBetween: 12
+              },
+              1024: {
+                slidesPerView: 10.3,
+                 spaceBetween: 12
+              },
+        }}>
         {data.data.genres.map(genre => (
           <Link key={genre.id} href={`/genre/${genre.id}`} className="bg-gray-200 h-20 block rounded p-6">
             {genre.title}
