@@ -9,7 +9,20 @@ import Header from '@/components/Header';
 import SwiperList from '@/components/SwiperList';
 import Spinner from '@/components/Spinner';
 
+import chill from '@/static/moods/chill.jpg';
+import commute from '@/static/moods/commute.jpg';
+import party from '@/static/moods/party.jpg';
+import energy from '@/static/moods/energy.jpg';
+import feelgood from '@/static/moods/feelgood.jpg';
+import focus from '@/static/moods/focus.jpg';
+import romance from '@/static/moods/romance.jpg';
+import sleep from '@/static/moods/sleep.jpg';
+import summer from '@/static/moods/summer.jpg';
+import workout from '@/static/moods/workout.jpg';
+
 const inter = Inter({ subsets: ['latin'] })
+
+const HIDDEN_MOODS = ['Black Lives Matter', 'Pride'];
 
 export default function Home() {
   const [term, setTerm] = useState('')
@@ -34,6 +47,39 @@ export default function Home() {
   )
 }
 
+const moods = {
+  Chill: {
+    background: chill,
+  },
+  Commute: {
+    background: commute,
+  },
+  'Energy Boosters': {
+    background: energy,
+  },
+  'Feel Good': {
+    background: feelgood,
+  },
+  Party: {
+    background: party,
+  },
+  Focus: {
+    background: focus,
+  },
+  Romance: {
+    background: romance,
+  },
+  Summer: {
+    background: summer,
+  },
+  Workout: {
+    background: workout,
+  },
+  Sleep: {
+    background: sleep,
+  },
+};
+
 function Genres() {
   const { isLoading, isError, isSuccess, data } = useQuery('genres', () => fetchGenres())
 
@@ -45,9 +91,10 @@ function Genres() {
     <div className='p-4'>
       <h2 className='font-bold text-lg mb-2 text-gray-700'>Vibes</h2>
       <SwiperList slidesPerView={2.2} spaceBetween={20}>
-        {data.data.moods.filter(mood => mood.title !== 'Black Lives Matter').map(mood => (
-          <Link key={mood.id} href={`/genre/${mood.id}`} className="bg-blue-200 h-20 block rounded p-6">
-            {mood.title}
+        {data.data.moods.filter(mood => ! HIDDEN_MOODS.includes(mood.title)).map(mood => (
+          <Link key={mood.id} href={`/genre/${mood.id}`}>
+            <div className="bg-blue-200 h-20 block rounded p-6" style={{ backgroundColor: moods[mood.title]?.color, backgroundImage: `url(${moods[mood.title]?.background.src})`, backgroundSize: 'cover', backgroundPosition: '100%' }}></div>
+            <span className="text-gray-700 text-sm">{mood.title}</span>
           </Link>
         ))}
       </SwiperList>
