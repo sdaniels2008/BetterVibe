@@ -81,9 +81,9 @@ function List({ data }) {
   return (
     <ul>
       {data.items.map(item => <li key={item.url}>
-        <a href={item.url.replace('?list=', '/')}>
+        <Link href={item.url.replace('?list=', '/')}>
         <img width="60" height="60" src={item.thumbnail} /> {item.name}
-        </a>
+        </Link>
         </li>)}
     </ul>
   )
