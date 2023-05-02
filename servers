@@ -1,0 +1,7 @@
+  const servers = [
+    'https://pipedapi.qdi.fi',
+    'https://watchapi.whatever.social',
+    'https://pipedapi.leptons.xyz',
+    'https://pipedapi.moomoo.me',
+    'https://piped-api.garudalinux.org',
+  ];

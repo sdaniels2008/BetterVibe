@@ -13,7 +13,7 @@ export default function Search() {
     <div>
       Search
       <div>
-      <input value={term} onChange={e => setTerm(e.target.value)} className="border rounded p-4" placeholder="Gloria..." />
+      <input value={term} onChange={e => setTerm(e.target.value)} className="border rounded p-4" placeholder="Album, Song or an Artist..." />
       </div>
 
       {!isLoading && data && <List data={data.data} />}
