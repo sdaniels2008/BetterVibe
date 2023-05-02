@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "react-query";
 
-import { fetchSearch } from "../fetch/search";
+import { fetchSearch } from "../../lib/fetch";
 
 export default function Search() {
   const [term, setTerm] = useState('')

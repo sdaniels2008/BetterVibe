@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { useQuery } from 'react-query';
 
 import streamAudio from '@/lib/streamAudio'
-import { fetchPlaylist, fetchWatch } from '../fetch/search';
+import { fetchPlaylist, fetchWatch } from '@/lib/fetch';
 
 function Playlist() {
   const router = useRouter()
@@ -37,22 +37,32 @@ streamAudio({streams: audioStreams, hls, duration}, audioRef.current)
   }
 
   return (
-    <div className="App">
-      {song.id && (
+    <>
+          <div id="bg-artwork" style={ ! playlist.isSuccess ? {} : { backgroundImage: `url(${playlist.data.data.thumbnailUrl})` }} />
+      <div id="bg-layer" />
+    <div className="playlist">
+      {playlist.isLoading && 'is loading...'}
+      {playlist.isSuccess && (
+        <div>
+          {playlist.name}
+          <div id="album-art" className={song.id ? 'active' : ''}>
+        <img src={playlist.data.data.thumbnailUrl} />
+            </div>
+      </div>
+      )}
+            {song.id && (
     <div className='shadow'>
       <b>Playing </b>
     {song.title}
     |
     {song.id}
-    <audio controls ref={audioRef}></audio>
+    <audio controls ref={audioRef} autoPlay></audio>
     </div>
       )}
-  
-
-      {playlist.isLoading && 'is loading...'}
       {playlist.isSuccess && playlist.data.data.relatedStreams.map(item =>
-        <div className="p-4 border" onClick={() => handleSongClick(item)}>{item.title}</div>)}
+        <div className={`p-4 ${item.url.endsWith(song.id) ? 'text-blue-400' : ''}`} onClick={() => handleSongClick(item)} key={item.url}>{item.title}</div>)}
     </div>
+    </>
   )
 }
 
