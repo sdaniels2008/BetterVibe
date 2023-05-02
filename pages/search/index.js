@@ -1,12 +1,13 @@
-import Image from 'next/image';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useQuery } from "react-query";
 
 import { fetchSearch } from "../fetch/search";
 
 export default function Search() {
   const [term, setTerm] = useState('')
-  const { isLoading, isError, isSuccess, data } = useQuery(['search', term], () => term && fetchSearch(term))
+  const { isLoading, isError, isSuccess, data } = useQuery(['search', term], () => fetchSearch(term), {
+    enabled: Boolean(term),
+  })
 
   return (
     <div>
