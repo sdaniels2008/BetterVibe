@@ -7,3 +7,11 @@ const client = axios.create({
 export function fetchSearch(term) {
     return client.get(`/search?q=${term}&filter=music_albums`);
 }
+
+export function fetchPlaylist(id) {
+  return client.get(`playlists/${id}`);
+}
+
+export function fetchWatch(id) {
+  return client.get(`https://pipedapi.qdi.fi/streams/${id}`)
+}

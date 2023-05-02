@@ -28,7 +28,11 @@ function List({ data }) {
 
   return (
     <ul>
-      {data.items.map(item => <li key={item.url}><img width="120" height="120" src={item.thumbnail} /> {item.name}</li>)}
+      {data.items.map(item => <li key={item.url}>
+        <a href={item.url.replace('?list=', '/')}>
+        <img width="60" height="60" src={item.thumbnail} /> {item.name}
+        </a>
+        </li>)}
     </ul>
   )
 }
