@@ -175,9 +175,8 @@ function Player({ thumbnail, song, audioRef, onNextTrack, playlist }) {
 
       <div className='w-3/5'>
         <div className='text-sm truncate'>{song.title}</div>
+        <audio controls ref={audioRef} onEnded={onNextTrack} autoPlay className="w-full mt-2"></audio>
       </div>
-
-      <audio controls ref={audioRef} onEnded={onNextTrack} autoPlay className='hidden'></audio>
     </div>
   );
 }
