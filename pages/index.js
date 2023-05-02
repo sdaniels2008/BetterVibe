@@ -9,6 +9,8 @@ import { fetchSearch, fetchGenres } from "../lib/fetch";
 const inter = Inter({ subsets: ['latin'] })
 
 export default function Home() {
+  const [term, setTerm] = useState('')
+
   return (
     <>
       <Head>
@@ -17,10 +19,12 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      
-      <Search />
 
+      <Search term={term} setTerm={setTerm} />
+
+      { ! term && (
       <Genres />
+      )}
     </>
   )
 }
@@ -33,7 +37,7 @@ function Genres() {
   }
 
   return <>
-    <div>
+    <div className='p-4'>
       <div className="flex flex-wrap gap-2">
     {data.data.moods.filter(mood => mood.title !== 'Black Lives Matter').map(mood => (
       <Link href={`/genre/${mood.id}`} className="bg-blue-200 w-20 h-20">
@@ -56,24 +60,33 @@ function Genres() {
 }
 
 
-function Search() {
-  const [term, setTerm] = useState('')
+function Search({ term, setTerm }) {
   const { isLoading, isError, isSuccess, data } = useQuery(['search', term], () => fetchSearch(term), {
     enabled: Boolean(term),
   })
 
   return (
-    <div>
-      <div>
-      <input value={term} onChange={e => setTerm(e.target.value)} className="border rounded p-4" placeholder="Album, Song or an Artist..." />
-      </div>
+    <div className='p-4'>
+      <form className="flex items-center">
+          <label for="simple-search" className="sr-only">Search</label>
+          <div className="relative w-full">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <svg ariaHidden="true" className="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"></path></svg>
+              </div>
+              <input type="text" id="simple-search" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Album, Song or Artist..." required value={term} onChange={e => setTerm(e.target.value)} />
+          </div>
+          <button type="submit" className="p-2.5 ml-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+              <span className="sr-only">Search</span>
+          </button>
+      </form>
 
-      {!isLoading && data && <List data={data.data} />}
+      {!isLoading && data && <SearchResult data={data.data} />}
     </div>
   );
 }
 
-function List({ data }) {
+function SearchResult({ data }) {
   if( ! data.items) {
     return 'no results :(';
   }
@@ -81,8 +94,10 @@ function List({ data }) {
   return (
     <ul>
       {data.items.map(item => <li key={item.url}>
-        <Link href={item.url.replace('?list=', '/')}>
-        <img width="60" height="60" src={item.thumbnail} /> {item.name}
+        <Link href={item.url.replace('?list=', '/')} className="mb-4">
+          <img width="60" height="60" src={item.thumbnail} className="rounded" />
+          <span className="text-gray-900">{item.name}</span>
+          <span className="text-gray-400 text-sm block">{item.uploaderName}</span>
         </Link>
         </li>)}
     </ul>

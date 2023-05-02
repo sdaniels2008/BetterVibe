@@ -4,8 +4,8 @@
 
 
 #album-art {
-  width: 115px;
-  height: 115px;
+  width: 60px;
+  height: 60px;
   margin-left: 40px;
   transform: rotateZ(0);
   transition: 0.3s ease all;

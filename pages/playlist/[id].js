@@ -1,12 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
-import axios from 'axios'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-query';
 
 import streamAudio from '@/lib/streamAudio'
 import { fetchPlaylist, fetchWatch } from '@/lib/fetch';
-
-
 
 function downloadContent(manifestUri, title) {
   // Construct a metadata object to be stored along side the content.
@@ -144,37 +141,63 @@ function Playlist() {
     <div className="playlist">
       {playlist.isLoading && 'is loading...'}
       {playlist.isSuccess && (
-        <div>
-          {playlist.data.data.name}
-          <div id="album-art" className={song.id ? 'active' : ''}>
-        <img src={playlist.data.data.thumbnailUrl} />
-            </div>
+        <div className='text-center p-4'>
+          <img src={playlist.data.data.thumbnailUrl} className="inline" />
+
+          <h1 className='text-lg font-bold mt-4'>{playlist.data.data.name}</h1>
       </div>
       )}
-            {song.id && (
-    <div className='shadow'>
-      <b>Playing </b>
-    {song.title}
-    |
-    {song.id}
-    <audio controls ref={audioRef} onEnded={handleNextTrack} autoPlay></audio>
-    </div>
-      )}
-      {playlist.isSuccess && songs.map(item =>
-        <div className={`p-4 ${item.url.endsWith(song.id) ? 'text-blue-400' : ''}`}  key={item.url}>
-          <span onClick={() => handleSongClick(item)}>{item.title}</span>
-          {item.url.endsWith(song.id) && (
-            <>
-                      {' | '}
-          <span onClick={() => handleDownload(item)}>Download</span>
-          </>
-          )}
-        </div>)}
+
+      <Player song={song} audioRef={audioRef} onNextTrack={handleNextTrack} playlist={playlist} />
+
+      {playlist.isSuccess && songs.map((item, index) => <Song song={song} key={item.url} item={item} index={index} onSongClick={handleSongClick} />)}
     </div>
     </>
   )
 }
 
+function Player({ song, audioRef, onNextTrack, playlist }) {
+  if( ! song.id) {
+    return null;
+  }
 
+  return (
+    <div className='fixed backdrop-blur-md w-full inset-x-0 bottom-0'>
+      <div>
+          <div id="album-art" className={song.id ? 'active' : ''}>
+        <img src={playlist.data.data.thumbnailUrl} />
+            </div>
+      </div>
+    {song.title}
+    <audio controls ref={audioRef} onEnded={onNextTrack} autoPlay></audio>
+    </div>
+  );
+}
+
+function Song({ item, index, onSongClick, song }) {
+  const { minutes, remainingSeconds } = convertDurationToMinutesAndSeconds(item.duration);
+  return (
+    <div className={`flex justify-between p-4 ${item.url.endsWith(song.id) ? 'text-blue-400' : ''}`}  >
+          <div className='flex items-center'>
+          <div className="mr-4 w-6 text-center">{index + 1}</div>
+          <div onClick={() => onSongClick(item)}>
+            <div>{item.title}</div>
+            <div>{item.uploaderName}</div>
+          </div>
+          </div>
+          <div>{minutes}:{remainingSeconds}</div>
+        </div>
+  );
+}
+
+function convertDurationToMinutesAndSeconds(seconds) {
+  const minutes = prependZero(Math.floor(seconds / 60));
+  const remainingSeconds = prependZero(seconds % 60);
+  return { minutes, remainingSeconds };
+}
+
+function prependZero(number) {
+  return number < 10 ? `0${number}` : number;
+}
 
 export default Playlist

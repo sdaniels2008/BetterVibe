@@ -8,12 +8,14 @@ export default function Genre() {
   const router = useRouter()
   const { id } = router.query
 
-  const { isLoading, isError, isSuccess, data } = useQuery(['genre', id], () => fetchGenre(id))
+  const { isLoading, isError, isSuccess, data } = useQuery(['genre', id], () => fetchGenre(id), {
+    enabled: Boolean(id),
+  })
 
 
   return (
     <div>
-      moo
+      mood
 
       {!isLoading && data && <List data={data.data} />}
     </div>
