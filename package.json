@@ -17,6 +17,7 @@
     "react-query": "^3.39.3",
     "shaka-player": "^4.3.3",
     "stream-browserify": "^3.0.0",
+    "swiper": "^9.2.0",
     "xml-js": "^1.6.11"
   },
   "devDependencies": {
