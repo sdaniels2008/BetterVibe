@@ -3,4 +3,14 @@
         "target" : { "namespace": "android_app", "package_name": "ir.bettervibe.twa",
                      "sha256_cert_fingerprints": ["3B:96:46:D4:1B:7D:B4:C8:BD:67:07:A6:BC:AD:73:53:D8:98:0B:02:DD:96:82:6E:F8:E6:6D:88:E3:FD:74:99"] }
       }
+,
+{
+      "relation": [
+        "check_validation"
+      ],
+      "target": {
+        "namespace": "cafebazaar_twa",
+        "package_name": "ir.bettervibe.twa"
+      }
+    }
 ]
