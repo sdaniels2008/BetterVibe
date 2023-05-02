@@ -5,8 +5,9 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 
 import { fetchSearch, fetchGenres } from "@/lib/fetch";
-import Header from '@/componenets/Header';
-import SwiperList from '@/componenets/SwiperList';
+import Header from '@/components/Header';
+import SwiperList from '@/components/SwiperList';
+import Spinner from '@/components/Spinner';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -37,7 +38,7 @@ function Genres() {
   const { isLoading, isError, isSuccess, data } = useQuery('genres', () => fetchGenres())
 
   if(isLoading) {
-    return 'Loading...';
+    return <Spinner />;
   }
 
   return <>

@@ -4,7 +4,8 @@ import { useQuery } from 'react-query';
 
 import streamAudio from '@/lib/streamAudio'
 import { fetchPlaylist, fetchWatch } from '@/lib/fetch';
-import Header from '@/componenets/Header';
+import Header from '@/components/Header';
+import Spinner from '@/components/Spinner';
 
 function downloadContent(manifestUri, title) {
   // Construct a metadata object to be stored along side the content.
@@ -63,7 +64,7 @@ function setMediaSessionControls() {
 
 function Playlist() {
   const router = useRouter()
-  const { id: playlistID } = router.query
+  const { id: playlistID, th } = router.query
   const audioRef = useRef(null);
 
   const [song, setSong] = useState({});
@@ -76,6 +77,10 @@ function Playlist() {
     enabled: Boolean(song.id),
   });
 
+  const thumbnail = ! playlist.isLoading && playlist?.data?.data?.thumbnailUrl?.includes('hqdefault')
+    ? th
+    : playlist?.data?.data?.thumbnailUrl;
+
   const songs = playlist?.data?.data?.relatedStreams || [];
 
   useEffect(() => {
@@ -85,8 +90,6 @@ function Playlist() {
 
     const { audioStreams, hls, duration } = watch.data.data
     streamAudio({streams: audioStreams, hls, duration}, audioRef.current)
-
-    console.log({song})
 
     if ('mediaSession' in navigator) {
       navigator.mediaSession.metadata = new MediaMetadata({
@@ -137,20 +140,19 @@ function Playlist() {
 
   return (
     <>
-          <div id="bg-artwork" style={ ! playlist.isSuccess ? {} : { backgroundImage: `url(${playlist.data.data.thumbnailUrl})` }} />
+          <div id="bg-artwork" style={ ! playlist.isSuccess ? {} : { backgroundImage: `url(${thumbnail})` }} />
       <div id="bg-layer" />
     <div className="playlist">
       <Header />
-      {playlist.isLoading && 'is loading...'}
+      {playlist.isLoading && <Spinner />}
       {playlist.isSuccess && (
         <div className='text-center p-4'>
-          <img src={playlist.data.data.thumbnailUrl} className="inline" />
-
+          <img src={thumbnail} className="inline" />
           <h1 className='text-lg font-bold mt-4'>{playlist.data.data.name}</h1>
       </div>
       )}
 
-      <Player song={song} audioRef={audioRef} onNextTrack={handleNextTrack} playlist={playlist} />
+      <Player thumbnail={thumbnail} song={song} audioRef={audioRef} onNextTrack={handleNextTrack} playlist={playlist} />
 
       {playlist.isSuccess && songs.map((item, index) => <Song song={song} key={item.url} item={item} index={index} onSongClick={handleSongClick} />)}
     </div>
@@ -158,20 +160,24 @@ function Playlist() {
   )
 }
 
-function Player({ song, audioRef, onNextTrack, playlist }) {
+function Player({ thumbnail, song, audioRef, onNextTrack, playlist }) {
   if( ! song.id) {
     return null;
   }
 
   return (
-    <div className='fixed backdrop-blur-md w-full inset-x-0 bottom-0'>
-      <div>
+    <div className='fixed backdrop-blur-md px-2 py-3 flex items-center justify-between w-full inset-x-0 bottom-0'>
+      <div className='w-2/5'>
           <div id="album-art" className={song.id ? 'active' : ''}>
-        <img src={playlist.data.data.thumbnailUrl} />
+        <img src={thumbnail} />
             </div>
       </div>
-    {song.title}
-    <audio controls ref={audioRef} onEnded={onNextTrack} autoPlay></audio>
+
+      <div className='w-3/5'>
+        <div className='text-sm truncate'>{song.title}</div>
+      </div>
+
+      <audio controls ref={audioRef} onEnded={onNextTrack} autoPlay className='hidden'></audio>
     </div>
   );
 }

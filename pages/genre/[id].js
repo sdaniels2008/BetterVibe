@@ -3,8 +3,9 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 
 import { fetchGenre } from "../../lib/fetch";
-import SwiperList from "@/componenets/SwiperList";
-import Header from "@/componenets/Header";
+import SwiperList from "@/components/SwiperList";
+import Header from "@/components/Header";
+import Spinner from "@/components/Spinner";
 
 export default function Genre() {
   const router = useRouter()
@@ -14,20 +15,23 @@ export default function Genre() {
     enabled: Boolean(id),
   })
 
-
   return (
     <div>
       <Header />
-      {!isLoading && data && <List data={data.data} />}
+      {isLoading && <Spinner />}
+      {isSuccess && data?.data?.featured && <List playlists={data?.data?.featured} title="Featured" />}
+      {isSuccess && data?.data?.shelf && <Shelf data={data.data} />}
     </div>
   );
 }
 
-function List({ data }) {
+function List({ playlists, title }) {
+  if( ! playlists.length) {
+    return null;
+  }
   return <>
-    {Object.keys(data.shelf).map((category, index) => (
-      <div key={index} className="p-4">
-        <h2 className="text-lg font-bold text-gray-700 mb-3">{category}</h2>
+      <div className="p-4">
+        <h2 className="text-lg font-bold text-gray-700 mb-3">{title}</h2>
         <SwiperList slidesPerView={2.3} spaceBetween={12} breakpoints={{
               640: {
                 slidesPerView: 4.3,
@@ -38,14 +42,18 @@ function List({ data }) {
                  spaceBetween: 12
               },
         }}>
-        {data.shelf[category].map(playlist => (
-          <Link key={playlist.id} href={`/playlist/${playlist.id}`} className="block">
+        {playlists.map(playlist => (
+          <Link key={playlist.id} href={`/playlist/${playlist.id}?th=${playlist.thumbnails[0].url}`} className="block">
             <img width="200" height="200" src={playlist.thumbnails[0].url} className="rounded" />
             <span className="text-gray-700 text-sm">{playlist.title}</span>
           </Link>
         ))}
         </SwiperList>
       </div>
-    ))}
   </>
+}
+
+function Shelf({ data }) {
+  return Object.keys(data.shelf)
+    .map((category, index) => <List key={index} playlists={data.shelf[category]} title={category} />)
 }
