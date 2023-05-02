@@ -1,16 +1,27 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { register } from 'swiper/element/bundle';
 
 register();
 
-export default function SwiperList({ children }) {
+export default function SwiperList({ children, slidesPerView, spaceBetween, breakpoints = {} }) {
   const swiperElRef = useRef(null);
+
+  useEffect(() => {
+    const swiperParams = {
+      slidesPerView,
+      spaceBetween,
+      breakpoints,
+    };
+
+    Object.assign(swiperElRef.current, swiperParams);
+
+    swiperElRef.current.initialize();
+  }, []);
 
   return (
     <swiper-container
       ref={swiperElRef}
-      slides-per-view="2.2"
-      space-between="20"
+      init="false"
       navigation="false"
       pagination="false"
     >

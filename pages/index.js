@@ -37,13 +37,13 @@ function Genres() {
   const { isLoading, isError, isSuccess, data } = useQuery('genres', () => fetchGenres())
 
   if(isLoading) {
-    return 'loading...';
+    return 'Loading...';
   }
 
   return <>
     <div className='p-4'>
       <h2 className='font-bold text-lg mb-2 text-gray-700'>Vibes</h2>
-      <SwiperList>
+      <SwiperList slidesPerView={2.2} spaceBetween={20}>
         {data.data.moods.filter(mood => mood.title !== 'Black Lives Matter').map(mood => (
           <Link key={mood.id} href={`/genre/${mood.id}`} className="bg-blue-200 h-20 block rounded p-6">
             {mood.title}
@@ -54,7 +54,7 @@ function Genres() {
       <hr className="my-4" />
 
       <h2 className='font-bold text-lg mb-2 text-gray-700'>Genres</h2>
-      <SwiperList>
+      <SwiperList slidesPerView={2.2} spaceBetween={20}>
         {data.data.genres.map(genre => (
           <Link key={genre.id} href={`/genre/${genre.id}`} className="bg-gray-200 h-20 block rounded p-6">
             {genre.title}
