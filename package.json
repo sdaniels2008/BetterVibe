@@ -1,6 +1,5 @@
 {
-  "name": "muzik",
-  "version": "0.1.0",
+  "name": "bettervibe",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -16,6 +15,7 @@
     "react-dom": "18.2.0",
     "react-query": "^3.39.3",
     "shaka-player": "^4.3.3",
+    "sharp": "^0.32.0",
     "stream-browserify": "^3.0.0",
     "swiper": "^9.2.0",
     "xml-js": "^1.6.11"

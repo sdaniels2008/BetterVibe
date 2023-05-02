@@ -30,13 +30,13 @@ function List({ data }) {
         <h2 className="text-lg font-bold text-gray-700 mb-3">{category}</h2>
         <SwiperList spaceBetween={20} breakpoints={{
               320: {
-                slidesPerView: 4.3,
+                slidesPerView: 3.3,
               },
               640: {
-                slidesPerView: 6.3,
+                slidesPerView: 5.3,
               },
               1024: {
-                slidesPerView: 12.3,
+                slidesPerView: 10.3,
               },
         }}>
         {data.shelf[category].map(playlist => (
