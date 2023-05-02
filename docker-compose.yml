@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+  backend:
+    image: codeberg.org/hyperpipe/hyperpipe-backend:latest
+    environment:
+      - HYP_PROXY=hyperpipe-proxy.onrender.com
+    ports:
+      - '3100:3000'
