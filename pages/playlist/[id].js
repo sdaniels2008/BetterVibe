@@ -77,7 +77,7 @@ function Playlist() {
     enabled: Boolean(song.id),
   });
 
-  const thumbnail = ! playlist.isLoading && playlist?.data?.data?.thumbnailUrl?.includes('hqdefault')
+  const thumbnail = ! playlist.isLoading && th && playlist?.data?.data?.thumbnailUrl?.includes('hqdefault')
     ? th
     : playlist?.data?.data?.thumbnailUrl;
 

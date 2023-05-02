@@ -19,6 +19,7 @@ import romance from '@/static/moods/romance.jpg';
 import sleep from '@/static/moods/sleep.jpg';
 import summer from '@/static/moods/summer.jpg';
 import workout from '@/static/moods/workout.jpg';
+import GenreListing from '@/components/GenreListing';
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -43,6 +44,9 @@ export default function Home() {
       { ! term && (
       <Genres />
       )}
+
+      <GenreListing id="ggMPOg1uX2lRZUZiMnNrQnJW" />
+      <GenreListing id="ggMPOg1uX1JOQWZFeDByc2Jm" />
     </>
   )
 }
@@ -146,12 +150,12 @@ function SearchResult({ data }) {
   }
 
   return (
-    <ul>
-      {data.items.map(item => <li key={item.url}>
+    <ul className='flex flex-wrap mt-10'>
+      {data.items.map(item => <li className='w-1/3 mb-6' key={item.url}>
         <Link href={item.url.replace('?list=', '/')} className="mb-4">
-          <img width="60" height="60" src={item.thumbnail} className="rounded" />
-          <span className="text-gray-900">{item.name}</span>
-          <span className="text-gray-400 text-sm block">{item.uploaderName}</span>
+          <img width="100" height="100" src={item.thumbnail} className="rounded bg-gray-200" />
+          <div className="text-gray-700 truncate">{item.name}</div>
+          <div className="text-gray-400 text-sm truncate">{item.uploaderName}</div>
         </Link>
         </li>)}
     </ul>
