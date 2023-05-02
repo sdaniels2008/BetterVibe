@@ -191,7 +191,7 @@ function Song({ item, index, onSongClick, song }) {
     <div className={`flex justify-between p-4 ${item.url.endsWith(song.id) ? 'text-blue-400' : ''}`}  >
           <div className='flex items-center'>
           <div className="mr-4 w-6 text-center">{index + 1}</div>
-          <div onClick={() => onSongClick(item)}>
+          <div onClick={() => onSongClick(item)} className='cursor-pointer'>
             <div>{item.title}</div>
             <div>{item.uploaderName}</div>
           </div>
