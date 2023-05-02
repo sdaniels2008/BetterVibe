@@ -166,8 +166,9 @@ function Player({ thumbnail, song, audioRef, onNextTrack, playlist }) {
   }
 
   return (
-    <div className='fixed backdrop-blur-md px-2 py-3 flex items-center justify-between w-full inset-x-0 bottom-0'>
-      <div className='w-2/5'>
+    <div className='fixed backdrop-blur-md px-2 py-3 w-full inset-x-0 bottom-0'>
+      <div className="flex items-center justify-between mb-5">
+        <div className='w-2/5'>
           <div id="album-art" className={song.id ? 'active' : ''}>
         <img src={thumbnail} />
             </div>
@@ -175,7 +176,10 @@ function Player({ thumbnail, song, audioRef, onNextTrack, playlist }) {
 
       <div className='w-3/5'>
         <div className='text-sm truncate'>{song.title}</div>
-        <audio controls ref={audioRef} onEnded={onNextTrack} autoPlay className="w-full mt-2"></audio>
+      </div>
+      </div>
+      <div>
+      <audio controls ref={audioRef} onEnded={onNextTrack} autoPlay className="w-full"></audio>
       </div>
     </div>
   );
