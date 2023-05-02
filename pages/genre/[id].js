@@ -24,9 +24,9 @@ export default function Genre() {
 
 function List({ data }) {
   return <>
-    {Object.keys(data.shelf).map(category => (
-      <div className="p-4">
-        <h2 class="text-lg font-bold">{category}</h2>
+    {Object.keys(data.shelf).map((category, index) => (
+      <div key={index} className="p-4">
+        <h2 className="text-lg font-bold">{category}</h2>
         <ul>
         {data.shelf[category].map(playlist => (
           <li key={playlist.id}><Link href={`/playlist/${playlist.id}`}>

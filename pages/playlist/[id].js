@@ -4,6 +4,7 @@ import { useQuery } from 'react-query';
 
 import streamAudio from '@/lib/streamAudio'
 import { fetchPlaylist, fetchWatch } from '@/lib/fetch';
+import Header from '@/componenets/Header';
 
 function downloadContent(manifestUri, title) {
   // Construct a metadata object to be stored along side the content.
@@ -139,6 +140,7 @@ function Playlist() {
           <div id="bg-artwork" style={ ! playlist.isSuccess ? {} : { backgroundImage: `url(${playlist.data.data.thumbnailUrl})` }} />
       <div id="bg-layer" />
     <div className="playlist">
+      <Header />
       {playlist.isLoading && 'is loading...'}
       {playlist.isSuccess && (
         <div className='text-center p-4'>
